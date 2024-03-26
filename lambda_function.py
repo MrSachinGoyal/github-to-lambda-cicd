@@ -22,7 +22,7 @@ def lambda_handler(event, context):
         print(response['Body'])
 
         # reading S3 data into pandas dataframe
-        orders_df = pd.read_json(response['Body'], sep=",")
+        orders_df = pd.read_json(response['Body'])
         print(orders_df.head())
 
         # filter the delivered orders
