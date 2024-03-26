@@ -22,7 +22,7 @@ def lambda_handler(event, context):
         print(response['Body'])
 
         # reading S3 data into pandas dataframe
-        orders_df = pd.read_csv(response['Body'], sep=",")
+        orders_df = pd.read_json(response['Body'], sep=",")
         print(orders_df.head())
 
         # filter the delivered orders
@@ -33,7 +33,7 @@ def lambda_handler(event, context):
         json_data = delivered_orders.to_json(orient='records')
         file_name = "2024-03-26_processed-data.json"
 
-        s3_client.put_object(Bucket=destination_bucket, key=file_name, Body=json_data)
+        s3_client.put_object(Bucket=destination_bucket, Key=file_name, Body=json_data)
         print(f"File '{file_name}' uploaded to bucket '{destination_bucket}'")
 
         message = "Input S3 File {} has been processed succesfuly !!".format("s3://"+bucket_name+"/"+s3_file_key)
